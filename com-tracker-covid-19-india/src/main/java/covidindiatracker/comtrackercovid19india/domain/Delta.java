@@ -1,6 +1,9 @@
 package covidindiatracker.comtrackercovid19india.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "DELTA")
@@ -20,8 +23,13 @@ public class Delta {
     @Column(name = "RECOVERED")
     private Integer recovered;
 
-    @Column(name = "DISTRICT_ID", nullable = false, insertable = false, updatable = false)
+    @Column(name = "DISTRICT_ID", insertable = false, updatable = false)
     private Long districtId;
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "DISTRICT_ID", referencedColumnName = "DISTRICT_ID",nullable = false)
+    private District district;
 
 
     public Delta(Long deltaId, Integer confirmed, Integer deceased, Integer recovered, Long districtId) {
@@ -30,6 +38,19 @@ public class Delta {
         this.deceased = deceased;
         this.recovered = recovered;
         this.districtId = districtId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Delta delta = (Delta) o;
+        return Objects.equals(deltaId, delta.deltaId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(deltaId);
     }
 
     public Delta() {
@@ -81,6 +102,14 @@ public class Delta {
 
     public String toString() {
         return "Delta(deltaId=" + this.getDeltaId() + ", confirmed=" + this.getConfirmed() + ", deceased=" + this.getDeceased() + ", recovered=" + this.getRecovered() + ", districtId=" + this.getDistrictId() + ")";
+    }
+
+    public District getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(District district) {
+        this.district = district;
     }
 
     public static class DeltaBuilder {

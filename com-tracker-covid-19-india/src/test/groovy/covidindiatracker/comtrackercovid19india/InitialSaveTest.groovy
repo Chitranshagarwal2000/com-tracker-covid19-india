@@ -27,19 +27,14 @@ class InitialSaveTest extends Specification{
 
     def "Initial save test" (){
         given:
-        Delta delta = Delta.builder().confirmed(10).deceased(10).recovered(10).build();
-        District district = District.builder().recovered(10).deceased(10).confirmed(10).active(10).delta(delta).districtName("Bhopal").notes("ASDADA").build()
+        Delta delta = Delta.builder().confirmed(10).deceased(100).recovered(10).build();
+        District district = District.builder().recovered(50).deceased(100).confirmed(100).active(10).delta(delta).districtName("Bhopal").notes("ASDADA").build()
+        delta.setDistrict(district)
         State state = State.builder().stateCode("MP").stateName("Madhya Pradesh").districts(Sets.newHashSet(district)).build()
         LOG.info("Printing")
 
         when:
         stateService.save(state)
-//        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-//        Session session = sessionFactory.openSession();
-//        session.beginTransaction()
-//        session.save(state)
-//        session.getTransaction().commit()
-//        session.close()
 
         then:
         1+1 == 2

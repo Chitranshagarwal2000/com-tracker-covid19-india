@@ -30,8 +30,8 @@ public class District {
     @Column(name = "RECOVERED")
     private Integer recovered;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "DISTRICT_ID", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "district")
+//    @JoinColumn(name = "DISTRICT_ID", nullable = false)
     private Delta delta;
 
     @Column(name = "STATE_ID", nullable = false, updatable = false, insertable = false)
@@ -138,13 +138,12 @@ public class District {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         District district = (District) o;
-        return Objects.equals(districtName, district.districtName) &&
-                Objects.equals(stateId, district.stateId);
+        return Objects.equals(districtName, district.districtName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(districtName, stateId);
+        return Objects.hash(districtName);
     }
 
     public static class DistrictBuilder {

@@ -66,9 +66,7 @@ public class State {
         this.stateName = stateName;
     }
 
-    public void setDistricts(Set<District> districts) {
-        this.districts = districts;
-    }
+    public void setDistricts(Set<District> districts) { this.districts = districts; }
 
     public String toString() {
         return "State(stateId=" + this.getStateId() + ", stateCode=" + this.getStateCode() + ", stateName=" + this.getStateName() + ", districts=" + this.getDistricts() + ")";
