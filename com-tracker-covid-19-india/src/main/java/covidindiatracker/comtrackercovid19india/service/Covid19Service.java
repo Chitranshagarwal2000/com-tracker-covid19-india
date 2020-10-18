@@ -1,19 +1,15 @@
 package covidindiatracker.comtrackercovid19india.service;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import covidindiatracker.comtrackercovid19india.domain.Delta;
 import covidindiatracker.comtrackercovid19india.domain.District;
 import covidindiatracker.comtrackercovid19india.domain.State;
-import covidindiatracker.comtrackercovid19india.repo.DeltaRepository;
-import covidindiatracker.comtrackercovid19india.repo.DistrictRepository;
 import covidindiatracker.comtrackercovid19india.repo.StateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -25,14 +21,10 @@ public class Covid19Service {
     private static final Logger LOG = LoggerFactory.getLogger(Covid19Service.class);
 
     private StateRepository stateRepository;
-    private DistrictRepository districtRepository;
-    private DeltaRepository deltaRepository;
 
     @Autowired
-    public Covid19Service(StateRepository stateRepository, DeltaRepository deltaRepository, DistrictRepository districtRepository){
+    public Covid19Service(StateRepository stateRepository){
         this.stateRepository = stateRepository;
-        this.districtRepository = districtRepository;
-        this.deltaRepository = deltaRepository;
     }
 
     public void save(State stateToSave){
