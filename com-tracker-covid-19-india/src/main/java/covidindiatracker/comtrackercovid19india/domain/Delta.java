@@ -108,9 +108,7 @@ public class Delta {
         return district;
     }
 
-    public void setDistrict(District district) {
-        this.district = district;
-    }
+    public void setDistrict(District district) { this.district = district; }
 
     public static class DeltaBuilder {
         private Long deltaId;

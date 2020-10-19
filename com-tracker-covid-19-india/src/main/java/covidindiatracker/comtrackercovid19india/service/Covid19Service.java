@@ -42,13 +42,15 @@ public class Covid19Service {
                 .filter(districtsToSave::contains)
                 .collect(Collectors.toMap(District::getDistrictName, t -> ImmutableMap.of(t.getDistrictId(), t.getDelta().getDeltaId())));
 
-        districtsToSave.forEach(t -> {
-            String name = t.getDistrictName();
-            Delta delta = t.getDelta();
-            delta.setDeltaId(map.get(name).entrySet().iterator().next().getValue());
-            t.setDelta(delta);
-            t.setDistrictId(map.get(name).entrySet().iterator().next().getKey());
-        });
+        districtsToSave.stream()
+                .filter(t -> map.containsKey(t.getDistrictName()))
+                .forEach(t -> {
+                    String name = t.getDistrictName();
+                    Delta delta = t.getDelta();
+                    delta.setDeltaId(map.get(name).entrySet().iterator().next().getValue());
+                    t.setDelta(delta);
+                    t.setDistrictId(map.get(name).entrySet().iterator().next().getKey());
+                });
 
         return districtsToSave;
 

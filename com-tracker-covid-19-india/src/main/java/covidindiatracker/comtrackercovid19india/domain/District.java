@@ -122,6 +122,7 @@ public class District {
     }
 
     public void setDelta(Delta delta) {
+        delta.setDistrict(this);
         this.delta = delta;
     }
 
