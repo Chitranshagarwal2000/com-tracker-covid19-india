@@ -17,6 +17,7 @@ import java.util.Set;
 @Component
 public class Parser {
 
+    //TODO: Use casting ony once 
     private static final Logger LOG = LoggerFactory.getLogger(Parser.class);
 
     public void parse (String json) {
