@@ -17,7 +17,17 @@ import java.util.Set;
 @Component
 public class Parser {
 
-    //TODO: Use casting ony once 
+    private static final String STATE_CODE = "statecode";
+    private static final String ACTIVE = "active";
+    private static final String CONFIRMED = "confirmed";
+    private static final String RECOVERED = "recovered";
+    private static final String DECEASED = "deceased";
+    private static final String NOTES = "notes";
+    private static final String DELTA = "delta";
+    private static final String DISTRICT_DATA = "districtData";
+
+
+
     private static final Logger LOG = LoggerFactory.getLogger(Parser.class);
 
     public void parse (String json) {
@@ -28,10 +38,12 @@ public class Parser {
         while (keys.hasNext()){
             State state = new State();
             String stateName = keys.next();
+            LOG.info("Received request for {}", stateName);
             state.setStateName(stateName);
-            state.setStateCode(((JSONObject) jsonObject.get(stateName)).get("statecode").toString());
+            JSONObject stateObject = ((JSONObject) jsonObject.get(stateName));
+            state.setStateCode(stateObject.get(STATE_CODE).toString());
             if (jsonObject.get(stateName) instanceof JSONObject){
-                state.setDistricts(buildDistrictData((JSONObject)((JSONObject) jsonObject.get(stateName)).get("districtData")));
+                state.setDistricts(buildDistrictData((JSONObject)stateObject.get(DISTRICT_DATA)));
                 states.add(state);
             }
         }
@@ -40,18 +52,19 @@ public class Parser {
     private Set<District> buildDistrictData(JSONObject districtData){
         Set<District> districtSet = new HashSet<>();
         if (Objects.nonNull(districtData)){
-            LOG.info("Beginning to build district data");
             Iterator<String> districts = districtData.keys();
             while (districts.hasNext()){
                 String districtName = districts.next();
+                LOG.info("Beginning to build district data for {}", districtName);
+                JSONObject districtJson = ((JSONObject)districtData.get(districtName));
                 District district = District.builder()
                         .districtName(districtName)
-                        .active(Integer.getInteger(((JSONObject)districtData.get(districtName)).get("active").toString()))
-                        .confirmed(Integer.getInteger(((JSONObject)districtData.get(districtName)).get("confirmed").toString()))
-                        .recovered(Integer.getInteger(((JSONObject)districtData.get(districtName)).get("recovered").toString()))
-                        .deceased(Integer.getInteger(((JSONObject)districtData.get(districtName)).get("deceased").toString()))
-                        .notes(((JSONObject)districtData.get(districtName)).get("notes").toString())
-                        .delta(buildDeltaObject((JSONObject)((JSONObject) districtData.get(districtName)).get("delta")))
+                        .active(Integer.valueOf(districtJson.get(ACTIVE).toString()))
+                        .confirmed(Integer.valueOf(districtJson.get(CONFIRMED).toString()))
+                        .recovered(Integer.valueOf(districtJson.get(RECOVERED).toString()))
+                        .deceased(Integer.valueOf(districtJson.get(DECEASED).toString()))
+                        .notes(districtJson.get(NOTES).toString())
+                        .delta(buildDeltaObject((JSONObject)districtJson.get(DELTA)))
                         .build();
                 districtSet.add(district);
             }
@@ -60,7 +73,11 @@ public class Parser {
     }
 
     private Delta buildDeltaObject(JSONObject deltaObject){
-        return null;
+        return Delta.builder()
+                .recovered(Integer.valueOf(deltaObject.get(RECOVERED).toString()))
+                .confirmed(Integer.valueOf(deltaObject.get(CONFIRMED).toString()))
+                .deceased(Integer.valueOf(deltaObject.get(DECEASED).toString()))
+                .build();
     }
 
 }
