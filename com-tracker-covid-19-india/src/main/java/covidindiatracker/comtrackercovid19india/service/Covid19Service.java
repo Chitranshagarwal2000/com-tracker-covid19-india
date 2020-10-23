@@ -27,14 +27,16 @@ public class Covid19Service {
         this.stateRepository = stateRepository;
     }
 
-    public void save(State stateToSave){
-        State existingState = stateRepository.findByStateName(stateToSave.getStateName());
-        if (Objects.nonNull(existingState)){
-            LOG.debug("State[{}] already exist in DB, tagging stateId {} to it", existingState.getStateName(),existingState.getStateId());
-            stateToSave.setStateId(existingState.getStateId());
-            stateToSave.setDistricts(tagDistrictId(stateToSave.getDistricts(), existingState.getDistricts()));
-        }
-        stateRepository.save(stateToSave);
+    public void save(Set<State> statesToSave){
+        statesToSave.forEach(stateToSave -> {
+            State existingState = stateRepository.findByStateName(stateToSave.getStateName());
+            if (Objects.nonNull(existingState)){
+                LOG.debug("State[{}] already exist in DB, tagging stateId {} to it", existingState.getStateName(),existingState.getStateId());
+                stateToSave.setStateId(existingState.getStateId());
+                stateToSave.setDistricts(tagDistrictId(stateToSave.getDistricts(), existingState.getDistricts()));
+            }
+            stateRepository.save(stateToSave);
+        });
     }
 
     private Set<District> tagDistrictId(Set<District> districtsToSave, Set<District> existingDistricts){

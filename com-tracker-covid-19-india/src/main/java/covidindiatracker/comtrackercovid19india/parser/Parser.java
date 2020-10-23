@@ -30,7 +30,7 @@ public class Parser {
 
     private static final Logger LOG = LoggerFactory.getLogger(Parser.class);
 
-    public void parse (String json) {
+    public Set<State> parse (String json) {
         Objects.requireNonNull(json,"Incoming JSON message is null");
         Set<State> states = new HashSet<>();
         JSONObject jsonObject = new JSONObject(json);
@@ -47,6 +47,7 @@ public class Parser {
                 states.add(state);
             }
         }
+        return states;
     }
 
     private Set<District> buildDistrictData(JSONObject districtData){
