@@ -1,3 +1,4 @@
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -10,6 +11,8 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: none
+  autoconfigure:
+    exclude: org.springframework.cloud.aws.autoconfigure.metrics.CloudWatchExportAutoConfiguration
 logging:
   level:
     covidindiatracker.comtrackercovid19india: DEBUG
@@ -17,3 +20,12 @@ logging:
     org.hibernate.type: TRACE
 api:
   state-wise-url-json: https://api.covid19india.org/state_district_wise.json
+cloud:
+  aws:
+    region:
+      auto: false
+      static: us-east-1
+    stack:
+      auto: false
+server:
+  port: 39200

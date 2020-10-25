@@ -28,7 +28,7 @@ public class Delta {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "DISTRICT_ID", referencedColumnName = "DISTRICT_ID",nullable = false)
+    @JoinColumn(name = "DISTRICT_ID")
     private District district;
 
 
@@ -38,19 +38,6 @@ public class Delta {
         this.deceased = deceased;
         this.recovered = recovered;
         this.districtId = districtId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Delta delta = (Delta) o;
-        return Objects.equals(deltaId, delta.deltaId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(deltaId);
     }
 
     public Delta() {
@@ -108,7 +95,9 @@ public class Delta {
         return district;
     }
 
-    public void setDistrict(District district) { this.district = district; }
+    public void setDistrict(District district) {
+        this.district = district;
+    }
 
     public static class DeltaBuilder {
         private Long deltaId;

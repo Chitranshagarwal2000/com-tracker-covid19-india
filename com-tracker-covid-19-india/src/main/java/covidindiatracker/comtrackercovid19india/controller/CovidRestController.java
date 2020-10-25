@@ -1,6 +1,5 @@
 package covidindiatracker.comtrackercovid19india.controller;
 
-import com.amazonaws.util.CollectionUtils;
 import covidindiatracker.comtrackercovid19india.domain.State;
 import covidindiatracker.comtrackercovid19india.domain.User;
 import covidindiatracker.comtrackercovid19india.service.Covid19Service;
@@ -11,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.persistence.EntityExistsException;
 import java.util.Objects;
 import java.util.Set;
-
-import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 public class CovidRestController {
@@ -37,13 +35,14 @@ public class CovidRestController {
     }
 
     @RequestMapping(value = "/fetchAndSave")
-    public void startMessaging(){
+    public ResponseEntity fetchDataAndSave(){
         Set<State> states = restDataExtractorService.returnObjectsFromApi();
-        if (CollectionUtils.isNullOrEmpty(states)){
+        if (CollectionUtils.isEmpty(states)){
             LOG.error("Unable to fetch the data of states, please check API");
-            return;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unable to save data of states, please check the logs");
         }
         covid19Service.save(states);
+        return ResponseEntity.status(HttpStatus.OK).body("Data saved successfully!!");
     }
 
     @RequestMapping(value = "/newuser")

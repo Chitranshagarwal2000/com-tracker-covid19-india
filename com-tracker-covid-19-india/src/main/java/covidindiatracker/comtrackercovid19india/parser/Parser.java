@@ -65,8 +65,8 @@ public class Parser {
                         .recovered(Integer.valueOf(districtJson.get(RECOVERED).toString()))
                         .deceased(Integer.valueOf(districtJson.get(DECEASED).toString()))
                         .notes(districtJson.get(NOTES).toString())
-                        .delta(buildDeltaObject((JSONObject)districtJson.get(DELTA)))
                         .build();
+                district.setDelta(buildDeltaObject((JSONObject)districtJson.get(DELTA)));
                 districtSet.add(district);
             }
         }

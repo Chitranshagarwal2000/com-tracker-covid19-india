@@ -1,15 +1,13 @@
 package covidindiatracker.comtrackercovid19india.service;
 
-import com.amazonaws.util.CollectionUtils;
-import com.google.common.collect.Sets;
 import covidindiatracker.comtrackercovid19india.domain.User;
 import covidindiatracker.comtrackercovid19india.repo.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -33,7 +31,7 @@ public class UserService {
         Set<User> users = new HashSet<>();
         try {
             users = (Set<User>) userRepository.findAll();
-            if (CollectionUtils.isNullOrEmpty(users)){
+            if (CollectionUtils.isEmpty(users)){
                 LOG.error("No data returned from the DB, please verify whether any existing users exist");
             }
         } catch (Exception e) {
