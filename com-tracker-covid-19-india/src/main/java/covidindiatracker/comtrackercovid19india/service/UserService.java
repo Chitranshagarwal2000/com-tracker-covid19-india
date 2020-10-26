@@ -23,7 +23,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User fetchUsersFromDB(Long mobile){
+    public User fetchUsersFromDB(String mobile){
         return userRepository.findByMobileNumber(mobile);
     }
 

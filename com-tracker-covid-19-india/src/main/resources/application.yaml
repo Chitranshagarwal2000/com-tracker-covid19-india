@@ -11,8 +11,6 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: none
-  autoconfigure:
-    exclude: org.springframework.cloud.aws.autoconfigure.metrics.CloudWatchExportAutoConfiguration
 logging:
   level:
     covidindiatracker.comtrackercovid19india: DEBUG
@@ -20,6 +18,7 @@ logging:
     org.hibernate.type: TRACE
 api:
   state-wise-url-json: https://api.covid19india.org/state_district_wise.json
+  new-user-save-format: "/newuser?name=DUMMY&number=DUMMY&state=DUMMY&district=DUMMY for + use %2B"
 cloud:
   aws:
     region:

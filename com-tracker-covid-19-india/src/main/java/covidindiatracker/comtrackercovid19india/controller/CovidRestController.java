@@ -8,9 +8,11 @@ import covidindiatracker.comtrackercovid19india.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,9 @@ import java.util.Set;
 
 @RestController
 public class CovidRestController {
+
+    @Value("${api.new-user-save-format}")
+    private String newUserSaveFormat;
 
     private RestDataExtractorService restDataExtractorService;
     private Covid19Service covid19Service;
@@ -46,29 +51,43 @@ public class CovidRestController {
     }
 
     @RequestMapping(value = "/newuser")
-    public ResponseEntity<User> persistNewUser(@RequestParam String name,
+    public ResponseEntity<String> persistNewUser(@RequestParam String name,
                                                @RequestParam String number,
                                                @RequestParam String state,
                                                @RequestParam String district){
         try {
+            number = number.length() == 10
+                    ? "+91" + number
+                    : number.length() == 13 && StringUtils.startsWithIgnoreCase("+91", number)
+                    ? number
+                    : null;
+            if (Objects.isNull(number))
+                throw new IllegalArgumentException("Please enter a number belonging to India");
             LOG.info("User received with name [{}], number [{}], state [{}] and district [{}]", name,number,state,district);
             User user = User.builder()
                     .username(name)
-                    .mobileNumber(Long.valueOf(number))
+                    .mobileNumber(number)
                     .state(state)
                     .district(district)
                     .build();
-            User existingUser = userService.fetchUsersFromDB(Long.valueOf(number));
+            User existingUser = userService.fetchUsersFromDB(number);
             if (Objects.nonNull(existingUser)){
                 user.setUserId(existingUser.getUserId());
                 throw new EntityExistsException("User with mobileNumber" + number + "already exists");
             }
             userService.save(user);
-            return ResponseEntity.status(HttpStatus.OK).body(user);
+            return ResponseEntity.status(HttpStatus.OK).body(user.toString());
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.toString());
         }
 
+    }
+
+    @RequestMapping(value = "/newusersaveformat")
+    public ResponseEntity displayNewUserSaveFormat(){
+        return Objects.nonNull(newUserSaveFormat)
+                ? ResponseEntity.status(HttpStatus.OK).body(newUserSaveFormat)
+                : ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("No Format is defined");
     }
 }

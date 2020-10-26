@@ -1,19 +1,18 @@
 package covidindiatracker.comtrackercovid19india.service;
 
-import com.google.common.collect.ImmutableMap;
 import covidindiatracker.comtrackercovid19india.domain.Delta;
 import covidindiatracker.comtrackercovid19india.domain.District;
 import covidindiatracker.comtrackercovid19india.domain.State;
 import covidindiatracker.comtrackercovid19india.repo.StateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.SerializationUtils;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

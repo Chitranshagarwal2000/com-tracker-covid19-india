@@ -15,8 +15,8 @@ public class User {
     @Column(name = "USERNAME", nullable = false)
     private String username;
 
-    @Column(name = "MOBILE", nullable = false, length = 10)
-    private Long mobileNumber;
+    @Column(name = "MOBILE", nullable = false, length = 13)
+    private String mobileNumber;
 
     @Column(name = "STATE", nullable = false)
     private String state;
@@ -24,7 +24,7 @@ public class User {
     @Column(name = "DISTRICT", nullable = false)
     private String district;
 
-    public User(Long userId, String username, Long mobileNumber, String state, String district) {
+    public User(Long userId, String username, String mobileNumber, String state, String district) {
         this.userId = userId;
         this.username = username;
         this.mobileNumber = mobileNumber;
@@ -47,7 +47,7 @@ public class User {
         return this.username;
     }
 
-    public Long getMobileNumber() {
+    public String getMobileNumber() {
         return this.mobileNumber;
     }
 
@@ -67,7 +67,7 @@ public class User {
         this.username = username;
     }
 
-    public void setMobileNumber(Long mobileNumber) {
+    public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
     }
 
@@ -99,7 +99,7 @@ public class User {
     public static class UserBuilder {
         private Long userId;
         private String username;
-        private Long mobileNumber;
+        private String mobileNumber;
         private String state;
         private String district;
 
@@ -116,7 +116,7 @@ public class User {
             return this;
         }
 
-        public User.UserBuilder mobileNumber(Long mobileNumber) {
+        public User.UserBuilder mobileNumber(String mobileNumber) {
             this.mobileNumber = mobileNumber;
             return this;
         }
