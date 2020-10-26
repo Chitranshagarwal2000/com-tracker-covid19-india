@@ -30,8 +30,9 @@ public class District {
     @Column(name = "RECOVERED")
     private Integer recovered;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "DISTRICT_ID", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "district")
+//    @JoinColumn(name = "DISTRICT_ID", referencedColumnName = "DISTRICT_ID")
+    @PrimaryKeyJoinColumn
     private Delta delta;
 
     @Column(name = "STATE_ID", nullable = false, updatable = false, insertable = false)

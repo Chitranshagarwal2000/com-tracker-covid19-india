@@ -48,14 +48,14 @@ public class Covid19Service {
     private Set<District> tagDistrictId(Set<District> districtsToSave, Set<District> existingDistricts){
         Set<District> districtSet = new HashSet<>();
 
-        Map<String,Map<Long,Delta>> districtNameIdMap = existingDistricts.stream()
-                .collect(Collectors.groupingBy(District::getDistrictName, Collectors.toMap(District::getDistrictId, District::getDelta)));
+        Map<String,Long> districtNameIdMap = existingDistricts.stream()
+                .collect(Collectors.toMap(District::getDistrictName, District::getDistrictId));
 
         districtsToSave.forEach(districtToSave -> {
             if (districtNameIdMap.containsKey(districtToSave.getDistrictName())){
-                districtToSave.setDistrictId(districtNameIdMap.get(districtToSave.getDistrictName()).keySet().iterator().next());
+                districtToSave.setDistrictId(districtNameIdMap.get(districtToSave.getDistrictName()));
                 Delta deltaToSave = districtToSave.getDelta();
-                deltaToSave.setDeltaId(districtNameIdMap.get(districtToSave.getDistrictName()).values().iterator().next().getDeltaId());
+                deltaToSave.setDistrictId(districtNameIdMap.get(districtToSave.getDistrictName()));
                 districtToSave.setDelta(deltaToSave);
             }
             districtSet.add(districtToSave);

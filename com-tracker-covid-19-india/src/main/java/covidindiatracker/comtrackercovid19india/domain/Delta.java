@@ -1,18 +1,19 @@
 package covidindiatracker.comtrackercovid19india.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "DELTA")
 public class Delta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "DELTA_ID", nullable = false)
-    private Long deltaId;
+    @Column(name = "DISTRICT_ID")
+    private Long districtId;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "DISTRICT_ID")
+    private District district;
 
     @Column(name = "CONFIRMED")
     private Integer confirmed;
@@ -23,21 +24,12 @@ public class Delta {
     @Column(name = "RECOVERED")
     private Integer recovered;
 
-    @Column(name = "DISTRICT_ID", insertable = false, updatable = false)
-    private Long districtId;
-
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "DISTRICT_ID")
-    private District district;
-
-
-    public Delta(Long deltaId, Integer confirmed, Integer deceased, Integer recovered, Long districtId) {
-        this.deltaId = deltaId;
+    public Delta(Long districtId, District district, Integer confirmed, Integer deceased, Integer recovered) {
+        this.districtId = districtId;
+        this.district = district;
         this.confirmed = confirmed;
         this.deceased = deceased;
         this.recovered = recovered;
-        this.districtId = districtId;
     }
 
     public Delta() {
@@ -47,8 +39,12 @@ public class Delta {
         return new DeltaBuilder();
     }
 
-    public Long getDeltaId() {
-        return this.deltaId;
+    public Long getDistrictId() {
+        return this.districtId;
+    }
+
+    public District getDistrict() {
+        return this.district;
     }
 
     public Integer getConfirmed() {
@@ -63,12 +59,12 @@ public class Delta {
         return this.recovered;
     }
 
-    public Long getDistrictId() {
-        return this.districtId;
+    public void setDistrictId(Long districtId) {
+        this.districtId = districtId;
     }
 
-    public void setDeltaId(Long deltaId) {
-        this.deltaId = deltaId;
+    public void setDistrict(District district) {
+        this.district = district;
     }
 
     public void setConfirmed(Integer confirmed) {
@@ -83,34 +79,27 @@ public class Delta {
         this.recovered = recovered;
     }
 
-    public void setDistrictId(Long districtId) {
-        this.districtId = districtId;
-    }
-
     public String toString() {
-        return "Delta(deltaId=" + this.getDeltaId() + ", confirmed=" + this.getConfirmed() + ", deceased=" + this.getDeceased() + ", recovered=" + this.getRecovered() + ", districtId=" + this.getDistrictId() + ")";
-    }
-
-    public District getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(District district) {
-        this.district = district;
+        return "Delta(districtId=" + this.getDistrictId() + ", district=" + this.getDistrict() + ", confirmed=" + this.getConfirmed() + ", deceased=" + this.getDeceased() + ", recovered=" + this.getRecovered() + ")";
     }
 
     public static class DeltaBuilder {
-        private Long deltaId;
+        private Long districtId;
+        private District district;
         private Integer confirmed;
         private Integer deceased;
         private Integer recovered;
-        private Long districtId;
 
         DeltaBuilder() {
         }
 
-        public Delta.DeltaBuilder deltaId(Long deltaId) {
-            this.deltaId = deltaId;
+        public Delta.DeltaBuilder districtId(Long districtId) {
+            this.districtId = districtId;
+            return this;
+        }
+
+        public Delta.DeltaBuilder district(District district) {
+            this.district = district;
             return this;
         }
 
@@ -129,17 +118,12 @@ public class Delta {
             return this;
         }
 
-        public Delta.DeltaBuilder districtId(Long districtId) {
-            this.districtId = districtId;
-            return this;
-        }
-
         public Delta build() {
-            return new Delta(deltaId, confirmed, deceased, recovered, districtId);
+            return new Delta(districtId, district, confirmed, deceased, recovered);
         }
 
         public String toString() {
-            return "Delta.DeltaBuilder(deltaId=" + this.deltaId + ", confirmed=" + this.confirmed + ", deceased=" + this.deceased + ", recovered=" + this.recovered + ", districtId=" + this.districtId + ")";
+            return "Delta.DeltaBuilder(districtId=" + this.districtId + ", district=" + this.district + ", confirmed=" + this.confirmed + ", deceased=" + this.deceased + ", recovered=" + this.recovered + ")";
         }
     }
 }
