@@ -73,7 +73,7 @@ public class CovidRestController {
             User existingUser = userService.fetchUsersFromDB(number);
             if (Objects.nonNull(existingUser)){
                 user.setUserId(existingUser.getUserId());
-                throw new EntityExistsException("User with mobileNumber" + number + "already exists");
+                throw new EntityExistsException("User with mobileNumber" + number + " already exists");
             }
             userService.save(user);
             return ResponseEntity.status(HttpStatus.OK).body(user.toString());

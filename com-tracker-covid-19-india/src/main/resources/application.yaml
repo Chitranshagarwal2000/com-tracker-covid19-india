@@ -18,7 +18,7 @@ logging:
     org.hibernate.type: TRACE
 api:
   state-wise-url-json: https://api.covid19india.org/state_district_wise.json
-  new-user-save-format: "/newuser?name=DUMMY&number=DUMMY&state=DUMMY&district=DUMMY for + use %2B"
+  new-user-save-format: "/newuser?name=DUMMY&number=DUMMY&state=DUMMY&district=DUMMY Enter only 10 digit mobile number"
 cloud:
   aws:
     region:
