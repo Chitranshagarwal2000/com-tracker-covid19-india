@@ -10,4 +10,6 @@ public interface DistrictRepository extends JpaRepository<District, Long> {
     @Query(value = "select * from District where district_name = :districtName and state_id = (select state_id from State where state_name = :stateName)", nativeQuery = true)
     District findByDistrictNameAndStateName(@Param("districtName") String districtName,
                                                        @Param("stateName") String stateName);
+
+    String findByDistrictName(String districtName);
 }

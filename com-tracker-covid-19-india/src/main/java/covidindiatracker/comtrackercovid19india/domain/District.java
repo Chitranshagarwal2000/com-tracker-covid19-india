@@ -31,7 +31,6 @@ public class District {
     private Integer recovered;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "district")
-//    @JoinColumn(name = "DISTRICT_ID", referencedColumnName = "DISTRICT_ID")
     @PrimaryKeyJoinColumn
     private Delta delta;
 
@@ -200,6 +199,19 @@ public class District {
 
         public String toString() {
             return "District.DistrictBuilder(districtId=" + this.districtId + ", districtName=" + this.districtName + ", notes=" + this.notes + ", active=" + this.active + ", confirmed=" + this.confirmed + ", deceased=" + this.deceased + ", recovered=" + this.recovered + ", delta=" + this.delta + ", stateId=" + this.stateId + ")";
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            DistrictBuilder that = (DistrictBuilder) o;
+            return Objects.equals(districtId, that.districtId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(districtId);
         }
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.el.EvaluationListener;
 import javax.persistence.EntityExistsException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -98,7 +99,7 @@ public class CovidRestController {
 
     @RequestMapping(value = "/sendMessages")
     public ResponseEntity sendMessagesToUsers(){
-        Set<User> users = userService.findAll();
+        List<User> users = userService.findAll();
         if (CollectionUtils.isEmpty(users)){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No user exist in the db");
         }
@@ -109,7 +110,13 @@ public class CovidRestController {
             District district = districtService.findDistrictByDistrictNameAndStateName(districtName, stateName);
             if (Objects.nonNull(district)){
                 Delta delta = deltaService.findDeltaByDistrictId(district.getDistrictId());
+                String message = "Current attributes are :-" + System.getProperty("line.separator") + "Total: " + district.getConfirmed()
+                        + System.getProperty("line.separator") + "Active: " + district.getActive() + "(" +(delta.getConfirmed() > 0 ? delta.getConfirmed() : "" ) + ")"
+                        + System.getProperty("line.separator") + "Recovered: " + district.getRecovered() + "(" + (delta.getRecovered() > 0 ? delta.getRecovered() : "" ) + ")"
+                        + System.getProperty("line.separator") + "Deceased: " + district.getDeceased() + "(" + (delta.getDeceased() > 0 ? delta.getDeceased() : "" ) + ")";
+                LOG.info("Message generated: {}", message);
             }
         });
+        return ResponseEntity.status(HttpStatus.OK).body("Request successful");
     }
 }
