@@ -1,10 +1,10 @@
 package covidindiatracker.comtrackercovid19india.controller;
 
+import covidindiatracker.comtrackercovid19india.domain.Delta;
+import covidindiatracker.comtrackercovid19india.domain.District;
 import covidindiatracker.comtrackercovid19india.domain.State;
 import covidindiatracker.comtrackercovid19india.domain.User;
-import covidindiatracker.comtrackercovid19india.service.Covid19Service;
-import covidindiatracker.comtrackercovid19india.service.RestDataExtractorService;
-import covidindiatracker.comtrackercovid19india.service.UserService;
+import covidindiatracker.comtrackercovid19india.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.el.EvaluationListener;
 import javax.persistence.EntityExistsException;
 import java.util.Objects;
 import java.util.Set;
@@ -30,13 +31,17 @@ public class CovidRestController {
     private RestDataExtractorService restDataExtractorService;
     private Covid19Service covid19Service;
     private UserService userService;
+    private DistrictService districtService;
+    private DeltaService deltaService;
     private static final Logger LOG = LoggerFactory.getLogger(CovidRestController.class);
 
     @Autowired
-    public CovidRestController(RestDataExtractorService restDataExtractorService, Covid19Service covid19Service, UserService userService){
+    public CovidRestController(RestDataExtractorService restDataExtractorService, Covid19Service covid19Service, UserService userService, DistrictService districtService, DeltaService deltaService){
         this.restDataExtractorService = restDataExtractorService;
         this.covid19Service = covid19Service;
         this.userService = userService;
+        this.districtService = districtService;
+        this.deltaService = deltaService;
     }
 
     @RequestMapping(value = "/fetchAndSave")
@@ -89,5 +94,22 @@ public class CovidRestController {
         return Objects.nonNull(newUserSaveFormat)
                 ? ResponseEntity.status(HttpStatus.OK).body(newUserSaveFormat)
                 : ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("No Format is defined");
+    }
+
+    @RequestMapping(value = "/sendMessages")
+    public ResponseEntity sendMessagesToUsers(){
+        Set<User> users = userService.findAll();
+        if (CollectionUtils.isEmpty(users)){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No user exist in the db");
+        }
+        users.forEach(user -> {
+            String mobileNumber = user.getMobileNumber();
+            String stateName = user.getState();
+            String districtName = user.getDistrict();
+            District district = districtService.findDistrictByDistrictNameAndStateName(districtName, stateName);
+            if (Objects.nonNull(district)){
+                Delta delta = deltaService.findDeltaByDistrictId(district.getDistrictId());
+            }
+        });
     }
 }

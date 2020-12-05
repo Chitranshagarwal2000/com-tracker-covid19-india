@@ -49,4 +49,8 @@ public class UserService {
             LOG.error("Error occurred in saving user {} to the DB {}", user, e);
         }
     }
+
+    public Set<User> getAllMobileNumbers(){
+        return (Set<User>) userRepository.findAll();
+    }
 }
