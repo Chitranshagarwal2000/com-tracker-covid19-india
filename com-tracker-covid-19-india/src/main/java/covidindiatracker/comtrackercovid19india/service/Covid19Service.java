@@ -1,5 +1,8 @@
 package covidindiatracker.comtrackercovid19india.service;
 
+import com.amazonaws.services.pinpoint.AmazonPinpoint;
+import com.amazonaws.services.pinpoint.AmazonPinpointClientBuilder;
+import com.amazonaws.services.pinpoint.model.*;
 import covidindiatracker.comtrackercovid19india.domain.Delta;
 import covidindiatracker.comtrackercovid19india.domain.District;
 import covidindiatracker.comtrackercovid19india.domain.State;
@@ -9,16 +12,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class Covid19Service {
 
     private static final Logger LOG = LoggerFactory.getLogger(Covid19Service.class);
+
+    private static final String REGION = "ap-south-1";
+    private static final String APP_ID = "61710ed3063f49e59180b6586ce02cd1";
+
 
     private StateRepository stateRepository;
 
@@ -60,5 +64,27 @@ public class Covid19Service {
             districtSet.add(districtToSave);
         });
         return districtSet;
+    }
+    public void sendSms(String mobileNumber, String message){
+        try {
+            Map<String, AddressConfiguration> addressMap = new HashMap<>();
+            addressMap.put(mobileNumber, new AddressConfiguration().withChannelType(ChannelType.SMS));
+            AmazonPinpoint client = AmazonPinpointClientBuilder.standard().withRegion(REGION).build();
+            SendMessagesRequest request = new SendMessagesRequest()
+                    .withApplicationId(APP_ID)
+                    .withMessageRequest(new MessageRequest()
+                    .withAddresses(addressMap)
+                    .withMessageConfiguration(new DirectMessageConfiguration()
+                        .withSMSMessage(new SMSMessage()
+                            .withBody(message)
+                            .withMessageType(MessageType.TRANSACTIONAL)
+                        )
+                    )
+            );
+            client.sendMessages(request);
+        }
+        catch (Exception ex){
+            LOG.error("Message was not sent {}", ex.getMessage());
+        }
     }
 }
