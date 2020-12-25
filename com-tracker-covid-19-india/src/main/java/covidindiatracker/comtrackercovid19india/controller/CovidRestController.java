@@ -53,6 +53,7 @@ public class CovidRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unable to save data of states, please check the logs");
         }
         covid19Service.save(states);
+        sendMessagesToUsers();
         return ResponseEntity.status(HttpStatus.OK).body("Data saved successfully!!");
     }
 
