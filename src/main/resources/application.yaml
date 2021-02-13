@@ -1,9 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${RDS_USERNAME}
-    password: ${RDS_PASSWORD}
-    url: jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}
+    url: jdbc:mysql://database-1.cqgfnpdsgeeb.ap-south-1.rds.amazonaws.com:3306/covid19
   application:
     name: Covid19IndiaTracker
   jpa:

@@ -33,6 +33,11 @@
             <artifactId>aws-java-sdk-sns</artifactId>
             <version>1.11.923</version>
         </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>aws-sdk-java</artifactId>
+            <version>2.15.81</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-pinpoint -->
         <dependency>
             <groupId>com.amazonaws</groupId>
