@@ -36,7 +36,6 @@ public class DatabasePropertiesListener implements ApplicationListener<Applicati
         String dbPassword = getString(secretJson, "password");
         ConfigurableEnvironment environment = event.getApplicationContext().getEnvironment();
         Properties props = new Properties();
-        log.info("DB CREDS ARE {} and {}", dbUser, dbPassword);
         props.put(SPRING_DATASOURCE_USERNAME, dbUser);
         props.put(SPRING_DATASOURCE_PASSWORD, dbPassword);
         environment.getPropertySources().addFirst(new PropertiesPropertySource("aws.secret.manager",props));
