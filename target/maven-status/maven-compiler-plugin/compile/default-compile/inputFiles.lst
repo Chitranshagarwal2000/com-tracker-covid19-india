@@ -1,0 +1,16 @@
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/repo/StateRepository.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/service/Covid19Service.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/domain/State.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/service/RestDataExtractorService.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/domain/District.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/domain/User.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/repo/DistrictRepository.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/repo/UserRepository.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/controller/CovidRestController.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/service/UserService.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/domain/Delta.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/repo/DeltaRepository.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/service/DeltaService.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/parser/Parser.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/Application.java
+/mnt/c/Code/com-tracker-covid19-india/src/main/java/covidindiatracker/comtrackercovid19india/service/DistrictService.java
