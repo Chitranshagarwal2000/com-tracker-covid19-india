@@ -5,8 +5,8 @@ files:
     destination: /tmp
 hooks:
   ApplicationStop:
-    -location: scripts/application-stop.sh
+    - location: scripts/application-stop.sh
     timeout: 500
   ApplicationStart:
-    -location: scripts/application-start.sh
+    - location: scripts/application-start.sh
     timeout: 500
