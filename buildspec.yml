@@ -17,6 +17,3 @@ phases:
 artifacts:
   files:
     - '**/*'
-cache:
-  paths:
-    - '/root/.m2/**.*'
