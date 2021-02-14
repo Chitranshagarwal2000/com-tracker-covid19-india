@@ -1,4 +1,5 @@
 #!/bin/bash
-set -e
-echo "Trying to start the application on port 5000"
+
+echo "deploying Mudoku-webapp.war"
 java -jar target/*.jar
+echo "done deploying Mudoku-webapp.war"

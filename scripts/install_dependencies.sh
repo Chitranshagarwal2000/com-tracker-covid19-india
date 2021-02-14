@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "Installing nothing"
+sudo amazon-linux-extras install java-openjdk11
