@@ -111,7 +111,6 @@ public class CovidRestController {
             District district = districtService.findDistrictByDistrictNameAndStateName(districtName, stateName);
             if (Objects.nonNull(district)){
                 Delta delta = deltaService.findDeltaByDistrictId(district.getDistrictId());
-                if (delta.getConfirmed() > 0 || delta.getDeceased() > 0 || delta.getRecovered() > 0) {
                     String message = "Current attributes are :-"
                             + System.getProperty("line.separator") + "Total: " + district.getConfirmed()
                             + System.getProperty("line.separator") + "Active: " + district.getActive() + "( " + delta.getConfirmed() + ")"
@@ -119,7 +118,6 @@ public class CovidRestController {
                             + System.getProperty("line.separator") + "Deceased: " + district.getDeceased() + "(" + delta.getDeceased() + ")");
                     LOG.debug("Message generated: {}", message);
                     covid19Service.sendSms(mobileNumber, message);
-                }
             }
         });
         return ResponseEntity.status(HttpStatus.OK).body("Request successful");

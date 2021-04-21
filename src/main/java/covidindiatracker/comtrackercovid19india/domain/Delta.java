@@ -79,8 +79,14 @@ public class Delta {
         this.recovered = recovered;
     }
 
+    @Override
     public String toString() {
-        return "Delta(districtId=" + this.getDistrictId() + ", district=" + this.getDistrict() + ", confirmed=" + this.getConfirmed() + ", deceased=" + this.getDeceased() + ", recovered=" + this.getRecovered() + ")";
+        return "Delta{" +
+                "districtId=" + districtId +
+                ", confirmed=" + confirmed +
+                ", deceased=" + deceased +
+                ", recovered=" + recovered +
+                '}';
     }
 
     public static class DeltaBuilder {

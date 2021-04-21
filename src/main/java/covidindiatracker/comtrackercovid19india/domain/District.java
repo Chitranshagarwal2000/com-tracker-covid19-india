@@ -130,8 +130,19 @@ public class District {
         this.stateId = stateId;
     }
 
+    @Override
     public String toString() {
-        return "District(districtId=" + this.getDistrictId() + ", districtName=" + this.getDistrictName() + ", notes=" + this.getNotes() + ", active=" + this.getActive() + ", confirmed=" + this.getConfirmed() + ", deceased=" + this.getDeceased() + ", recovered=" + this.getRecovered() + ", delta=" + this.getDelta() + ", stateId=" + this.getStateId() + ")";
+        return "District{" +
+                "districtId=" + districtId +
+                ", districtName='" + districtName + '\'' +
+                ", notes='" + notes + '\'' +
+                ", active=" + active +
+                ", confirmed=" + confirmed +
+                ", deceased=" + deceased +
+                ", recovered=" + recovered +
+                ", delta=" + delta +
+                ", stateId=" + stateId +
+                '}';
     }
 
     public static class DistrictBuilder {

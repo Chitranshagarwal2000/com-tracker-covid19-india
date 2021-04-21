@@ -1,8 +1,5 @@
 package covidindiatracker.comtrackercovid19india.service;
 
-import com.amazonaws.services.pinpoint.AmazonPinpoint;
-import com.amazonaws.services.pinpoint.AmazonPinpointClientBuilder;
-import com.amazonaws.services.pinpoint.model.*;
 import covidindiatracker.comtrackercovid19india.domain.Delta;
 import covidindiatracker.comtrackercovid19india.domain.District;
 import covidindiatracker.comtrackercovid19india.domain.State;
@@ -11,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.pinpoint.PinpointClient;
+import software.amazon.awssdk.services.pinpoint.model.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -68,22 +68,41 @@ public class Covid19Service {
     public void sendSms(String mobileNumber, String message){
         try {
             Map<String, AddressConfiguration> addressMap = new HashMap<>();
-            addressMap.put(mobileNumber, new AddressConfiguration().withChannelType(ChannelType.SMS));
-            AmazonPinpoint client = AmazonPinpointClientBuilder.standard().withRegion(REGION).build();
-            SendMessagesRequest request = new SendMessagesRequest()
-                    .withApplicationId(APP_ID)
-                    .withMessageRequest(new MessageRequest()
-                    .withAddresses(addressMap)
-                    .withMessageConfiguration(new DirectMessageConfiguration()
-                        .withSMSMessage(new SMSMessage()
-                            .withBody(message)
-                            .withMessageType(MessageType.TRANSACTIONAL)
-                        )
-                    )
-            );
-            client.sendMessages(request);
+            AddressConfiguration addConfig = AddressConfiguration.builder()
+                    .channelType(ChannelType.SMS)
+                    .build();
+            addressMap.put(mobileNumber, addConfig);
+            SMSMessage smsMessage = SMSMessage.builder()
+                    .body(message)
+                    .messageType(MessageType.TRANSACTIONAL)
+                    .build();
+
+            DirectMessageConfiguration direct = DirectMessageConfiguration.builder()
+                    .smsMessage(smsMessage)
+                    .build();
+
+            MessageRequest messageRequest = MessageRequest.builder()
+                    .addresses(addressMap)
+                    .messageConfiguration(direct)
+                    .build();
+
+            SendMessagesRequest request = SendMessagesRequest.builder()
+                    .applicationId(APP_ID)
+                    .messageRequest(messageRequest)
+                    .build();
+
+            PinpointClient pinpointClient = PinpointClient.builder()
+                    .region(Region.AP_SOUTH_1)
+                    .build();
+
+            SendMessagesResponse response = pinpointClient.sendMessages(request);
+
+            MessageResponse response1 = response.messageResponse();
+            Map<String, MessageResult> map = response1.result();
+
+            map.forEach((k, v) -> LOG.debug(k + ":" +v));
         }
-        catch (Exception ex){
+        catch (PinpointException ex){
             LOG.error("Message was not sent {}", ex.getMessage());
         }
     }
