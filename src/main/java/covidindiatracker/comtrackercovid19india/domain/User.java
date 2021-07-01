@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "USER")
-public class User {
+public class User{
 
     @Id
     @Column(name = "USER_ID")
@@ -84,12 +84,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(mobileNumber, user.mobileNumber);
+        return Objects.equals(mobileNumber, user.mobileNumber) && Objects.equals(district, user.district);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mobileNumber);
+        return Objects.hash(mobileNumber, district);
     }
 
     public String toString() {

@@ -17,6 +17,7 @@ spring:
 
 logging:
   level:
+    root: INFO
     covidindiatracker.comtrackercovid19india: DEBUG
     org.hibernate.SQL: DEBUG
     org.hibernate.type: TRACE

@@ -20,9 +20,13 @@ public class RestDataExtractorService {
     private String url;
 
     @Autowired
-    private Parser parser;
+    private final Parser parser;
 
     private static final Logger LOG = LoggerFactory.getLogger(RestDataExtractorService.class);
+
+    public RestDataExtractorService(Parser parser) {
+        this.parser = parser;
+    }
 
     public Set<State> returnObjectsFromApi(){
         LOG.info("Beginning to fetch the data from url {}", url);

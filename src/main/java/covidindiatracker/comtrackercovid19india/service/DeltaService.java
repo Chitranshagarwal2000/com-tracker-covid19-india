@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service;
 public class DeltaService {
 
     @Autowired
-    private DeltaRepository deltaRepository;
+    private final DeltaRepository deltaRepository;
+
+    public DeltaService(DeltaRepository deltaRepository) {
+        this.deltaRepository = deltaRepository;
+    }
 
     public Delta findDeltaByDistrictId(Long districtId){
         return deltaRepository.findByDistrictId(districtId);

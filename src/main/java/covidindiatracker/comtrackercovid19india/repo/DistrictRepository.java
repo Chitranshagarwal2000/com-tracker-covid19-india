@@ -7,9 +7,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface DistrictRepository extends JpaRepository<District, Long> {
 
-    @Query(value = "select * from district where district_name = :districtName and state_id = (select state_id from state where state_name = :stateName)", nativeQuery = true)
+    @Query(value = "SELECT d from District d inner join State s where s.stateName = :stateName and d.districtName = :districtName")
     District findByDistrictNameAndStateName(@Param("districtName") String districtName,
-                                                       @Param("stateName") String stateName);
+                                            @Param("stateName") String stateName);
 
-    String findByDistrictName(String districtName);
 }

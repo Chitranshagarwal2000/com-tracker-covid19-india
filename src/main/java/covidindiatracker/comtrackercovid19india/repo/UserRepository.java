@@ -10,8 +10,8 @@ import java.util.Set;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByMobileNumber(String mobilenumber);
+    User findByMobileNumber(String mobileNumber);
 
-    @Query(value = "select * from user", nativeQuery = true)
+    @Query(value = "select u from user u")
     Set<User> getAll();
 }

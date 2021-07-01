@@ -18,15 +18,13 @@ import java.util.*;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-    private StateRepository stateRepository;
-    private DistrictRepository districtRepository;
+    private final UserRepository userRepository;
+    private final DistrictRepository districtRepository;
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    public UserService(UserRepository userRepository, StateRepository stateRepository, DistrictRepository districtRepository){
+    public UserService(UserRepository userRepository, DistrictRepository districtRepository){
         this.userRepository = userRepository;
-        this.stateRepository = stateRepository;
         this.districtRepository = districtRepository;
     }
 
