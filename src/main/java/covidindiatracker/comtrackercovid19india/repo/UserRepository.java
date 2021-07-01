@@ -12,6 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByMobileNumber(String mobileNumber);
 
-    @Query(value = "select u from user u")
+    @Query(value = "select u from User u")
     Set<User> getAll();
 }
